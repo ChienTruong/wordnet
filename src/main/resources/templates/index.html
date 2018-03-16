@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Home</title>
+    <!-- Css -->
+    <link rel="stylesheet" href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css"/>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <div class="input-group">
+                        <input id="word" type="text" class="form-control" placeholder="Search for..."/>
+                        <span class="input-group-btn">
+                    <button class="btn btn-default search" type="button">Find!</button>
+                </span>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <ul id="listSynset">
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Js -->
+<script src="/webjars/jquery/3.2.0/jquery.min.js"></script>
+<script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="/static/index.js" th:src="@{/index.js}"></script>
+</body>
+</html>
