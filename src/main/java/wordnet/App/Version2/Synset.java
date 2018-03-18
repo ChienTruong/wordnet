@@ -1,6 +1,5 @@
 package wordnet.App.Version2;
 
-import lombok.Data;
 import wordnet.App.Util.Regex;
 import wordnet.App.Util.SetOfWordAbsolutelyNotIsNoun;
 
@@ -20,6 +19,7 @@ public class Synset {
     private Map<String, WordForm> mapWordFormFromGloss = new HashMap<>(0);
     private Set<String> allWordInGloss;
     private Map<String, String> mapReflectionBetweenWordInGlossAndSynsetId;
+    private Map<String, String> mapReflectonBetweenWordAndThisId;
 
     public String getSynsetId() {
         return synsetId;
@@ -59,6 +59,18 @@ public class Synset {
 
     public void setMapWordFormFromGloss(Map<String, WordForm> mapWordFormFromGloss) {
         this.mapWordFormFromGloss = mapWordFormFromGloss;
+    }
+
+    public Map<String, String> getMapReflectonBetweenWordAndThisId() {
+        if (this.mapReflectonBetweenWordAndThisId == null) {
+            this.mapReflectonBetweenWordAndThisId = new HashMap<>(0);
+            this.getMapWordForm().forEach(
+                    (s, wordForm) -> {
+                        this.mapReflectonBetweenWordAndThisId.put(s, this.synsetId);
+                    }
+            );
+        }
+        return this.mapReflectonBetweenWordAndThisId;
     }
 
     public Map<String, String> getMapReflectionBetweenWordInGlossAndSynsetId() {

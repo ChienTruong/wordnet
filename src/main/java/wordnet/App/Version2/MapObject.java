@@ -12,6 +12,7 @@ public class MapObject {
     private Map<String, List<String>> mapReflectionBetweenWordAndSynsetId;
     private Set<String> setWord;
     private Map<String, List<String>> mapReflectionBetweenSynsetIdAndWordOfSynset;
+    public Service service = new Service();
 
     public Map<String, IndexObject> getMapObject() {
         return mapObject;
@@ -69,43 +70,41 @@ public class MapObject {
         return this.mapReflectionBetweenWordAndSynsetId;
     }
 
-    private Map<String, List<String>> getReflectionBetweenSynsetIdAndWordOfSynset() {
+    private Map<String, List<String>> getReflectionBetweenWordOfSynsetAndSynsetId() {
         if (this.mapReflectionBetweenSynsetIdAndWordOfSynset == null) {
-            this.mapReflectionBetweenSynsetIdAndWordOfSynset = new HashMap<>(0);
+            Set<Synset> setSynset = new HashSet<>(0);
             this.mapObject.forEach(
-                    (word, indexObject) -> {
+                    (s, indexObject) -> {
                         indexObject.getMapSynset().forEach(
-                                (synsetId, synset) -> {
-                                    for (String wordOfSynset : synset.getMapWordForm().keySet()) {
-                                        if (!this.mapReflectionBetweenSynsetIdAndWordOfSynset.containsKey(wordOfSynset)) {
-                                            List<String> listSynsetId = new ArrayList<>();
-                                            listSynsetId.add(synsetId);
-                                            this.mapReflectionBetweenSynsetIdAndWordOfSynset.put(wordOfSynset, listSynsetId);
-                                        } else {
-                                            this.mapReflectionBetweenSynsetIdAndWordOfSynset.get(wordOfSynset).add(synsetId);
-                                        }
-                                    }
+                                (s1, synset) -> {
+                                    setSynset.add(synset);
                                 }
                         );
                     }
             );
+            this.mapReflectionBetweenSynsetIdAndWordOfSynset = this.service.createMapReflectionBetweenWordOfSynsetAndSynsetId(setSynset);
         }
         return this.mapReflectionBetweenSynsetIdAndWordOfSynset;
     }
 
     public void replaceAllSynsetWithWordInThis(Map<String, Synset> mapSynsetWithWordInThis) {
-        this.getReflectionBetweenWordAndSynsetId().forEach(
-                (synsetId, list) -> {
-                    for (String word : this.getReflectionBetweenWordAndSynsetId().get(synsetId)) {
-                        this.mapObject.get(word).getMapSynset().put(synsetId, mapSynsetWithWordInThis.get(synsetId));
-                    }
-                });
+//        this.getReflectionBetweenWordAndSynsetId().forEach(
+//                (synsetId, list) -> {
+//                    for (String word : this.getReflectionBetweenWordAndSynsetId().get(synsetId)) {
+//                        this.mapObject.get(word).getMapSynset().put(synsetId, mapSynsetWithWordInThis.get(synsetId));
+//                    }
+//                });
+        this.mapObject.forEach(
+                (s, indexObject) -> {
+                    service.replaceBetweenTwoMap(indexObject.getMapSynset(), mapSynsetWithWordInThis);
+                }
+        );
     }
 
     public void replaceAllSynsetWithMeanOfWordInThis(Map<String, List<String>> mapSynsetWithMeanOfWordInThis) {
         mapSynsetWithMeanOfWordInThis.forEach(
                 (key, listMean) -> {
-                    List<String> listSynsetId = this.getReflectionBetweenSynsetIdAndWordOfSynset().get(key);
+                    List<String> listSynsetId = this.getReflectionBetweenWordOfSynsetAndSynsetId().get(key);
                     for (String synsetId : listSynsetId) {
                         List<String> listWord = this.getReflectionBetweenWordAndSynsetId().get(synsetId);
                         for (String word : listWord) {
@@ -142,5 +141,31 @@ public class MapObject {
                 }
         );
         return setSynsetIdOfLayerNear;
+    }
+
+    public void setDependentForIndexObjectOfWordInSynset(Map<String, IndexObject> dependentForWordInSynset) {
+        dependentForWordInSynset.forEach(
+                (s, indexObject) -> {
+                    List<String> listSynsetIdContainThisWord = this.getReflectionBetweenWordOfSynsetAndSynsetId().get(s);
+                    for (String synsetId : listSynsetIdContainThisWord) {
+                        List<String> listWordParentContainThisSynset = this.getReflectionBetweenWordAndSynsetId().get(synsetId);
+                        for (String wordParent : listWordParentContainThisSynset) {
+                            this.mapObject.get(wordParent).getMapSynset().get(synsetId).getMapWordForm().get(s).setIndexObject(indexObject);
+                        }
+                    }
+                }
+        );
+    }
+
+    public void replaceGloss(Map<String, List<String>> listMeanGloss) {
+        this.mapObject.forEach(
+                (s, indexObject) -> {
+                    indexObject.getMapSynset().forEach(
+                            (s1, synset) -> {
+                                service.replaceMapGloss(synset, listMeanGloss);
+                            }
+                    );
+                }
+        );
     }
 }
