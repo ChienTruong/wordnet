@@ -1,7 +1,7 @@
 package wordnet.ProcessDataInput.Action.Do.Impl;
 
 import org.springframework.stereotype.Component;
-import wordnet.ProcessDataInput.Dto.Synset;
+import wordnet.ProcessDataInput.Model.Synset;
 import wordnet.ProcessDataInput.Action.Do.CreateSetOfSynset;
 
 import java.util.HashSet;

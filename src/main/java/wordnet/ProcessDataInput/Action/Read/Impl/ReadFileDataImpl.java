@@ -3,8 +3,8 @@ package wordnet.ProcessDataInput.Action.Read.Impl;
 import org.springframework.stereotype.Component;
 import wordnet.Util.PathFile;
 import wordnet.ProcessDataInput.Action.Read.ReadFileData;
-import wordnet.ProcessDataInput.Dto.Synset;
-import wordnet.ProcessDataInput.Dto.WordForm;
+import wordnet.ProcessDataInput.Model.Synset;
+import wordnet.ProcessDataInput.Model.WordForm;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -49,7 +49,7 @@ public class ReadFileDataImpl extends AttributeFile implements ReadFileData {
                     synset.setSynsetId(lines[0]);
                     synset.setGloss(line.split(" \\| ")[1].trim());
                     // get word
-                    int i = Integer.valueOf(lines[3]);
+                    int i = Integer.parseInt(lines[3], 16);
                     int k = 4;
                     for (int j = 0; j < i; j++) {
                         String word = lines[k];

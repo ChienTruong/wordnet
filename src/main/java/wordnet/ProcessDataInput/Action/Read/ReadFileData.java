@@ -1,6 +1,6 @@
 package wordnet.ProcessDataInput.Action.Read;
 
-import wordnet.ProcessDataInput.Dto.Synset;
+import wordnet.ProcessDataInput.Model.Synset;
 
 import java.io.IOException;
 import java.util.Map;

@@ -1,8 +1,8 @@
 package wordnet.ProcessDataInput.Action.Do.Impl;
 
 import org.springframework.stereotype.Component;
-import wordnet.ProcessDataInput.Dto.Synset;
 import wordnet.ProcessDataInput.Action.Do.CreateMapReflectionBetweenWordOfSynsetAndSynsetId;
+import wordnet.ProcessDataInput.Model.Synset;
 
 import java.util.*;
 
@@ -21,11 +21,10 @@ public class CreateMapReflectionBetweenWordOfSynsetAndSynsetIdImpl implements Cr
                             (s, s2) -> {
                                 if (!mapReflectionBetweenWordOfSynsetAndSynsetId.containsKey(s)) {
                                     List<String> listSynsetId = new ArrayList<>(0);
-                                    listSynsetId.add(s2);
                                     mapReflectionBetweenWordOfSynsetAndSynsetId.put(s, listSynsetId);
-                                } else {
-                                    mapReflectionBetweenWordOfSynsetAndSynsetId.get(s).add(s2);
                                 }
+                                mapReflectionBetweenWordOfSynsetAndSynsetId.get(s).add(s2);
+
                             }
                     );
                 }

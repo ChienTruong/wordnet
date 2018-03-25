@@ -2,9 +2,9 @@ package wordnet.ProcessDataInput.Action.Read.Impl;
 
 import lombok.Data;
 import org.springframework.stereotype.Component;
+import wordnet.ProcessDataInput.Action.Read.ReadFileEV;
 import wordnet.Util.PathFile;
 import wordnet.Util.Regex;
-import wordnet.ProcessDataInput.Action.Read.ReadFileEV;
 
 import java.io.IOException;
 import java.util.*;
@@ -44,9 +44,9 @@ public class ReadFileEVImpl extends AttributeFile implements ReadFileEV {
                             this.line = String.join(", ", strings);
                             if (map.get(wordCurrent.getWord()) == null) {
                                 List<String> meanList = new ArrayList<>(0);
-                                meanList.add(this.line);
                                 map.put(wordCurrent.getWord(), meanList);
-                            } else {
+                            }
+                            if (!this.line.isEmpty()) {
                                 map.get(wordCurrent.getWord()).add(this.line);
                             }
                         }
@@ -54,6 +54,14 @@ public class ReadFileEVImpl extends AttributeFile implements ReadFileEV {
                 }
             }
         }
+        // limited null pointer
+        // bởi vì có những từ không có trong từ điển tiếng việt
+        for (String s : setWord) {
+            if (!map.containsKey(s)) {
+                map.put(s, new ArrayList<>(0));
+            }
+        }
+        // end limited
         // end Do
         this.bufferedReader.close();
         return map;

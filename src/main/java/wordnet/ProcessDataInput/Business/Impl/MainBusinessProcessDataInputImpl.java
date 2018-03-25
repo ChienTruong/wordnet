@@ -9,10 +9,10 @@ import wordnet.ProcessDataInput.Action.Read.ReadFileData;
 import wordnet.ProcessDataInput.Action.Read.ReadFileEV;
 import wordnet.ProcessDataInput.Action.Read.ReadFileIndex;
 import wordnet.ProcessDataInput.Business.MainBusinessProcessDataInput;
-import wordnet.ProcessDataInput.Dto.IndexObject;
-import wordnet.ProcessDataInput.Dto.MapObject;
-import wordnet.App.Dto.MapObjectProcessed;
-import wordnet.ProcessDataInput.Dto.Synset;
+import wordnet.ProcessDataInput.Model.IndexObject;
+import wordnet.ProcessDataInput.Model.MapObject;
+import wordnet.App.Model.MapObjectProcessed;
+import wordnet.ProcessDataInput.Model.Synset;
 
 import java.io.IOException;
 import java.util.List;
@@ -46,14 +46,14 @@ public class MainBusinessProcessDataInputImpl implements MainBusinessProcessData
         this.mapObject = new MapObject(replace, createMapReflectionBetweenWordOfSynsetAndSynsetId);
     }
 
-    public MapObjectProcessed doActionFour() throws IOException {
+    private MapObjectProcessed doActionFour() throws IOException {
         Set<String> setWordOfGloss = this.mapObject.getAllWordOfGloss();
         Map<String, List<String>> listMeanGloss = this.readFileEV.read(setWordOfGloss);
         this.mapObject.replaceGloss(listMeanGloss);
         return this.retrieveCloneItSelf();
     }
 
-    public MapObjectProcessed doActionThree() throws IOException {
+    private MapObjectProcessed doActionThree() throws IOException {
         Set<String> setSynsetIdOfLayerNear = this.mapObject.getAllSynsetIdOfLayerNear();
         Map<String, Synset> mapSynset = this.readFileData.read(setSynsetIdOfLayerNear);
         Set<String> setOfWord = this.createSetOfSynset.createSetWordOfSynsetFromMapSynset(mapSynset);
@@ -68,13 +68,13 @@ public class MainBusinessProcessDataInputImpl implements MainBusinessProcessData
                     );
                 }
         );
-        return this.retrieveCloneItSelf();
+        return doActionFour();
     }
 
-    public MapObjectProcessed doActionTwo() throws IOException {
+    private MapObjectProcessed doActionTwo() throws IOException {
         Map<String, IndexObject> mapIndexObjectForDependent = this.readFileIndex.read(this.mapObject.getAllWordOfSynsetInIndexObject());
         this.mapObject.setDependentForIndexObjectOfWordInSynset(mapIndexObjectForDependent);
-        return this.retrieveCloneItSelf();
+        return doActionThree();
     }
 
     public MapObjectProcessed doActionOne(Set<String> wordInputSet) throws IOException {
@@ -88,7 +88,7 @@ public class MainBusinessProcessDataInputImpl implements MainBusinessProcessData
         Map<String, List<String>> mapMean = this.readFileEV.read(setOfWord);
         setMeanforSynset(mapSynset, mapMean);
         this.mapObject.replaceAllSynsetWithWordInThis(mapSynset);
-        return this.retrieveCloneItSelf();
+        return doActionTwo();
     }
 
     private void setMeanforSynset(Map<String, Synset> mapSet, Map<String, List<String>> listMeanOfMapSet) {

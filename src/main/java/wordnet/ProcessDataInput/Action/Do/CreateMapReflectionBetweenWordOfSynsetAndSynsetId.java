@@ -1,6 +1,6 @@
 package wordnet.ProcessDataInput.Action.Do;
 
-import wordnet.ProcessDataInput.Dto.Synset;
+import wordnet.ProcessDataInput.Model.Synset;
 
 import java.util.List;
 import java.util.Map;

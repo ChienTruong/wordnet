@@ -1,13 +1,13 @@
 package wordnet.App.Business;
 
-import wordnet.App.Dto.BodyFind;
-import wordnet.App.Dto.Output;
+import wordnet.App.Model.BodyFind;
+import wordnet.App.Model.Output;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * Created by chien on 19/03/2018.
  */
 public interface MainBusiness {
-    Output identifyMeanOfWord(Set<BodyFind> bodyFindSet);
+    Output identifyMeanOfWord(List<BodyFind> bodyFindSet);
 }

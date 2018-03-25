@@ -1,6 +1,6 @@
 package wordnet.ProcessDataInput.Action.Read;
 
-import wordnet.ProcessDataInput.Dto.IndexObject;
+import wordnet.ProcessDataInput.Model.IndexObject;
 
 import java.io.IOException;
 import java.util.Map;

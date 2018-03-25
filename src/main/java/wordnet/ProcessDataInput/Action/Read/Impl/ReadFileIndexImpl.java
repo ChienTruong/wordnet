@@ -3,8 +3,8 @@ package wordnet.ProcessDataInput.Action.Read.Impl;
 import org.springframework.stereotype.Component;
 import wordnet.Util.PathFile;
 import wordnet.ProcessDataInput.Action.Read.ReadFileIndex;
-import wordnet.ProcessDataInput.Dto.IndexObject;
-import wordnet.ProcessDataInput.Dto.Synset;
+import wordnet.ProcessDataInput.Model.IndexObject;
+import wordnet.ProcessDataInput.Model.Synset;
 
 import java.io.IOException;
 import java.util.HashMap;
