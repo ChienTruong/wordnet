@@ -66,18 +66,20 @@ public class MainBusinessImpl implements MainBusiness {
                 (word, indexObject) ->
                         indexObject.getMapSynset().forEach(
                                 (synsetId, synset) -> {
-                                    for (Class aClass : NameStrategy.classList) {
-                                        try {
-                                            this.chooseMeanOfSynset = StrategyFactory.getStrategy(aClass);
-                                            List<String> listMean = this.chooseMeanOfSynset.choice(synset);
-                                            if (/*listMean != null && */!listMean.isEmpty()) {
-                                                addMeanOfSynsetForOutput(listMean, synset, word, this.chooseMeanOfSynset);
-                                                break;
+                                    if (!this.output.verifySynsetProcessed(synset)) {
+                                        for (Class aClass : NameStrategy.classList) {
+                                            try {
+                                                this.chooseMeanOfSynset = StrategyFactory.getStrategy(aClass);
+                                                List<String> listMean = this.chooseMeanOfSynset.choice(synset);
+                                                if (/*listMean != null && */!listMean.isEmpty()) {
+                                                    addMeanOfSynsetForOutput(listMean, synset, word, synset.getGloss(), this.chooseMeanOfSynset);
+                                                    break;
+                                                }
+                                            } catch (IllegalAccessException e) {
+                                                e.printStackTrace();
+                                            } catch (InstantiationException e) {
+                                                e.printStackTrace();
                                             }
-                                        } catch (IllegalAccessException e) {
-                                            e.printStackTrace();
-                                        } catch (InstantiationException e) {
-                                            e.printStackTrace();
                                         }
                                     }
                                 }
@@ -86,16 +88,20 @@ public class MainBusinessImpl implements MainBusiness {
     }
 
     /**
-     * set mean for synset of word input
+     * set mean for synset
      *
      * @param listMean
+     * @param synset
+     * @param word
+     * @param gloss
      * @param chooseMeanOfSynset
      */
-    private void addMeanOfSynsetForOutput(List<String> listMean, Synset synset, String word, ChooseMeanOfSynset chooseMeanOfSynset) {
+    private void addMeanOfSynsetForOutput(List<String> listMean, Synset synset, String word, String gloss, ChooseMeanOfSynset chooseMeanOfSynset) {
         Result result = new Result();
         result.setIdSynset(synset.getSynsetId());
         result.setListWordEn(synset.getMapWordForm().keySet().stream().collect(Collectors.toList()));
         result.setListWordVn(listMean);
+        result.setGloss(gloss);
         result.setCaseName(chooseMeanOfSynset.getNameStrategy());
         this.output.plus(result, word);
     }

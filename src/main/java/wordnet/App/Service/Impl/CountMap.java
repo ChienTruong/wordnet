@@ -4,7 +4,6 @@ import wordnet.ProcessDataInput.Model.Synset;
 import wordnet.Util.Regex;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Created by chien on 20/03/2018.
@@ -39,7 +38,13 @@ public class CountMap {
         List<String> listWordVn = new ArrayList<>(0);
         for (String s : wordFormKeySet) {
             List<String> listMeanOfWordForm = synset.getMapWordForm().get(s).getListMean();
-            Set<String> setMeanOfWordForm = listMeanOfWordForm.stream().collect(Collectors.toSet());
+            Set<String> setMeanOfWordForm = new HashSet<>(0);
+            for (String s1 : listMeanOfWordForm) {
+                String[] strings = s1.split(", ");
+                for (String string : strings) {
+                    setMeanOfWordForm.add(string);
+                }
+            }
             String[] strings = setMeanOfWordForm.toString().replaceAll(Regex.regexBracket, "").split(", ");
             for (String string : strings) {
                 if (!string.isEmpty()) {
@@ -54,6 +59,7 @@ public class CountMap {
      * có 2 khả năng xảy ra
      * 1. chưa tồn tại synset trong map cache
      * 2. tồn tại, nhưng số lượng từ count khác nhau
+     *
      * @param synset
      * @return
      */

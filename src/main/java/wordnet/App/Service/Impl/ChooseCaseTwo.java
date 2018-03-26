@@ -38,7 +38,7 @@ public class ChooseCaseTwo implements ChooseMeanOfSynset {
                             }
                         }
                 );
-                if (!listMean.isEmpty()) {
+                if (listMean.isEmpty()) {
                     for (String s : wordFormKeyDependentSet) {
                         listMean.addAll(synset.getMapWordForm().get(s).getListMean());
                     }

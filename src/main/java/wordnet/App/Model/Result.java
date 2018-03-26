@@ -12,6 +12,7 @@ public class Result {
     private String idSynset;
     private List<String> listWordEn;
     private List<String> listWordVn;
+    private String gloss;
     private String caseName;
 
     @Override
@@ -20,7 +21,8 @@ public class Result {
                 "idSynset='" + idSynset + '\'' +
                 ", listWordEn=" + listWordEn +
                 ", listWordVn=" + listWordVn +
+                ", gloss='" + gloss + '\'' +
                 ", caseName='" + caseName + '\'' +
-                "}";
+                '}';
     }
 }

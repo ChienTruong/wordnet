@@ -1,5 +1,7 @@
 package wordnet.App.Model;
 
+import wordnet.ProcessDataInput.Model.Synset;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +24,14 @@ public class Output {
             this.map.put(word, list);
         }
         this.map.get(word).add(result);
+    }
+
+    public boolean verifySynsetProcessed(Synset synset) {
+        return this.map.entrySet().stream()
+                .anyMatch(stringListEntry ->
+                        stringListEntry.getValue().stream()
+                                .anyMatch(result -> result.getIdSynset().equals(synset.getSynsetId()))
+                );
     }
 
     public int getCountOfResult() {
