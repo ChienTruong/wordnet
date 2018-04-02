@@ -8,6 +8,7 @@ import wordnet.App.Model.MapObjectProcessed;
 import wordnet.App.Model.Output;
 import wordnet.App.Model.Result;
 import wordnet.App.Service.ChooseMeanOfSynset;
+import wordnet.App.Util.ExportExcel;
 import wordnet.App.Util.NameStrategy;
 import wordnet.App.Util.StrategyFactory;
 import wordnet.ProcessDataInput.Business.MainBusinessProcessDataInput;
@@ -51,6 +52,8 @@ public class MainBusinessImpl implements MainBusiness {
                     }
             );
             System.out.println(this.output.getCountOfResult());
+//            ExportExcel.exportExcel(this.output);
+//            System.out.println("Done Export");
         } catch (IOException e) {
             e.printStackTrace();
         }

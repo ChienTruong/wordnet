@@ -34,7 +34,7 @@ public class ChooseCaseNounIndividual implements ChooseMeanOfSynset {
                     return listMean;
                 }
             }
-            listMean.add("NounIndividual");
+            listMean.addAll(synset.getMapWordForm().keySet());
         }
         return listMean;
     }

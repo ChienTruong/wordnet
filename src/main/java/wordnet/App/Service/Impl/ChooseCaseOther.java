@@ -32,6 +32,9 @@ public class ChooseCaseOther implements ChooseMeanOfSynset {
             if (listMean.isEmpty()) {
                 for (String s : wordFormSet) {
                     if (Month.verifyIsMonth(s)) {
+                        if (Month.verifyIsMonthShortName(s)) {
+                            s = Month.getFullNameFromShortName(s);
+                        }
                         listMean.addAll(synset.getMapWordForm().get(s).getListMean());
                         break;
                     }

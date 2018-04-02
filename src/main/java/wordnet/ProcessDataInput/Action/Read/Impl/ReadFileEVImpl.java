@@ -33,6 +33,9 @@ public class ReadFileEVImpl extends AttributeFile implements ReadFileEV {
                 switch (firstCharacter) {
                     case "@":
                         this.line = this.line.substring(1, line.length());
+                        if (this.line.contains(" ")) {
+                            this.line = this.line.replaceAll(" ", "_");
+                        }
                         wordCurrent.setWord(this.line);
                         if (setWord.contains(this.line) || countWord == n) {
                             n++;

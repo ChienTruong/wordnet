@@ -11,7 +11,8 @@ import java.util.List;
 @Data
 public class WordForm {
     private String word;
-    private List<String> listMean = new ArrayList<>();
+    private List<String> listMean = new ArrayList<>(0);
+    private List<String> listSynonymMean = new ArrayList<>(0);
     private IndexObject indexObject;
 
     public boolean verifyDependent() {
