@@ -9,6 +9,7 @@ public class PathFile {
     public static final String dataFile = "file/data.noun";
     public static final String fileDataEV = "file/ev.txt";
     public static final String fileSynonym = "file/synDict.txt";
+    public static final String fileSpecial = "file/special.txt";
     public static final String exportExcel = "file/output.xlsx";
 
 

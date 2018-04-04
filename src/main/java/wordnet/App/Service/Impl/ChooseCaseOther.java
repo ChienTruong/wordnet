@@ -12,6 +12,7 @@ import java.util.Set;
  * Created by chien on 25/03/2018.
  */
 public class ChooseCaseOther implements ChooseMeanOfSynset {
+
     @Override
     public List<String> choice(Synset synset) {
         List<String> listMean = new ArrayList<>(0);
@@ -26,6 +27,17 @@ public class ChooseCaseOther implements ChooseMeanOfSynset {
                     break;
                 } catch (Exception e) {
 //                    e.printStackTrace();
+                }
+            }
+            // case blood
+            if (listMean.isEmpty()) {
+                if (synset.getGloss().contains("the blood group whose red cells carry")) {
+                    for (String s : synset.getMapWordForm().keySet()) {
+                        if (s.length() == 1) {
+                            listMean.add("Nhóm máu " + s);
+                            break;
+                        }
+                    }
                 }
             }
             // case month

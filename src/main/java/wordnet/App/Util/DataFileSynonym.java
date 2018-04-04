@@ -12,9 +12,7 @@ import java.util.stream.Stream;
 /**
  * Created by chien on 28/03/2018.
  */
-public class DataFileSynonym {
-
-    private List<String> list;
+public class DataFileSynonym extends DataFile {
 
     public void getSynonymForSynset(Synset synset) {
         Set<String> wordFormEnSet = synset.getMapWordForm().keySet();
@@ -30,7 +28,7 @@ public class DataFileSynonym {
                 }
             }
         }
-        for (String s : list) {
+        for (String s : this.list) {
             String[] strings = s.split(",");
             for (String string : strings) {
                 if (wordFormVnSet.contains(string)) {
@@ -43,17 +41,12 @@ public class DataFileSynonym {
     }
 
     public DataFileSynonym() {
-        try {
-            this.read();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        super();
     }
 
-    private void read() throws IOException {
-        Stream stream = Files.lines(Paths.get(PathFile.fileSynonym));
-        list = new ArrayList<>(0);
-        stream.forEach(o -> list.add(String.valueOf(o)));
+    @Override
+    protected String getNameFile() {
+        return PathFile.fileSynonym;
     }
 
 }
