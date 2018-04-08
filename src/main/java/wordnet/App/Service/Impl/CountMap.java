@@ -71,6 +71,8 @@ public class CountMap {
         } else {
             // 2
             // verify same map
+            // lấy số từ synset cần đếm, so sánh với số từ synset đã tồn tại
+            // nếu giống nhau khõi đếm, vice versa
             Set<String> wordFormVnOfSynset = new HashSet<>(0);
             synset.getMapWordForm().entrySet().forEach(stringWordFormEntry -> wordFormVnOfSynset.addAll(stringWordFormEntry.getValue().getListMean()));
             if (!wordFormVnOfSynset.equals(collectionOfMapCount.get(synset.getSynsetId()).keySet())) {

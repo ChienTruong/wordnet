@@ -321,9 +321,7 @@ public class ChooseCaseThree implements ChooseMeanOfSynset {
             List<String> allMeanOfSynset = new ArrayList<>(0);
             synset.getMapWordForm().forEach(
                     (s, wordForm) -> {
-                        for (String s1 : wordForm.getListMean()) {
-                            allMeanOfSynset.add(s1);
-                        }
+                        allMeanOfSynset.addAll(Arrays.asList(wordForm.getListMean().toString().replaceAll(Regex.regexBracket, "").split(", ")));
                     }
             );
             mapReflection.put(synset, allMeanOfSynset);

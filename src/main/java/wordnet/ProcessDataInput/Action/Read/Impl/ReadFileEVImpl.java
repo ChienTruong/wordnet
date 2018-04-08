@@ -15,6 +15,14 @@ import java.util.*;
 @Component
 public class ReadFileEVImpl extends AttributeFile implements ReadFileEV {
 
+    /**
+     * @problem
+     * 05/04
+     * danh từ số nhiều, không thể nhận dạng trong từ điển việt anh
+     * @param setWord
+     * @return
+     * @throws IOException
+     */
     @Override
     public Map<String, List<String>> read(Set<String> setWord) throws IOException {
         this.connect();
@@ -45,10 +53,12 @@ public class ReadFileEVImpl extends AttributeFile implements ReadFileEV {
                         if (setWord.contains(wordCurrent.getWord())) {
                             String[] strings = this.line.substring(1, this.line.length()).replaceAll(Regex.regexBracket, "").split(",");
                             this.line = String.join(", ", strings);
+                            // create list for map
                             if (map.get(wordCurrent.getWord()) == null) {
                                 List<String> meanList = new ArrayList<>(0);
                                 map.put(wordCurrent.getWord(), meanList);
                             }
+                            // add mean for list
                             if (!this.line.isEmpty()) {
                                 map.get(wordCurrent.getWord()).add(this.line);
                             }
@@ -69,6 +79,7 @@ public class ReadFileEVImpl extends AttributeFile implements ReadFileEV {
         this.bufferedReader.close();
         return map;
     }
+
 
     @Override
     protected String getPathFile() {
