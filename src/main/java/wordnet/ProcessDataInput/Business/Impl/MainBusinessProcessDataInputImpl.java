@@ -13,8 +13,10 @@ import wordnet.ProcessDataInput.Model.IndexObject;
 import wordnet.ProcessDataInput.Model.MapObject;
 import wordnet.App.Model.MapObjectProcessed;
 import wordnet.ProcessDataInput.Model.Synset;
+import wordnet.Util.PathFile;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -31,6 +33,9 @@ public class MainBusinessProcessDataInputImpl implements MainBusinessProcessData
     private ReadFileIndex readFileIndex;
     private CreateSetOfSynset createSetOfSynset;
     private MapObject mapObject;
+
+    public MainBusinessProcessDataInputImpl() {
+    }
 
     @Autowired
     public MainBusinessProcessDataInputImpl(ReadFileEV readFileEV,
@@ -77,10 +82,26 @@ public class MainBusinessProcessDataInputImpl implements MainBusinessProcessData
         return doActionThree();
     }
 
-    public MapObjectProcessed doActionOne(Set<String> wordInputSet) throws IOException {
+    public MapObjectProcessed doActionOneWithWord(Set<String> wordInputSet) throws IOException {
         // case 1
         // read file index with word input
         this.mapObject.setMapObject(this.readFileIndex.read(wordInputSet));
+//        // read file data get synset object
+//        Map<String, Synset> mapSynset = this.readFileData.read(this.mapObject.getAllSynsetIdOfIndexObject());
+//        // read file EV get mean of word in container
+//        Set<String> setOfWord = this.createSetOfSynset.createSetWordOfSynsetFromMapSynset(mapSynset);
+//        Map<String, List<String>> mapMean = this.readFileEV.read(setOfWord);
+//        setMeanforSynset(mapSynset, mapMean);
+//        this.mapObject.replaceAllSynsetWithWordInThis(mapSynset);
+        return doActionOne();
+    }
+
+    public MapObjectProcessed doActionOneWithSynset(Set<String> synsetIdSet) throws IOException {
+        this.mapObject.setMapObject(makeMapIndexFromSetSynset(synsetIdSet));
+        return doActionOne();
+    }
+
+    private MapObjectProcessed doActionOne() throws IOException {
         // read file data get synset object
         Map<String, Synset> mapSynset = this.readFileData.read(this.mapObject.getAllSynsetIdOfIndexObject());
         // read file EV get mean of word in container
@@ -108,4 +129,16 @@ public class MainBusinessProcessDataInputImpl implements MainBusinessProcessData
         return this.mapObject.cloneThisProcessed();
     }
 
+    private Map<String, IndexObject> makeMapIndexFromSetSynset(Set<String> synsetIdSet) {
+        Map<String, IndexObject> map = new HashMap<>(1);
+        IndexObject indexObject = new IndexObject();
+        for (String s : synsetIdSet) {
+            Synset synset = new Synset();
+            synset.setSynsetId(s);
+            indexObject.getMapSynset().put(s, synset);
+        }
+        indexObject.setWord("WORD");
+        map.put(indexObject.getWord(), indexObject);
+        return map;
+    }
 }

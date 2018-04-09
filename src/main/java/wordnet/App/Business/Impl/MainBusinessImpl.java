@@ -8,6 +8,7 @@ import wordnet.App.Model.MapObjectProcessed;
 import wordnet.App.Model.Output;
 import wordnet.App.Model.Result;
 import wordnet.App.Service.ChooseMeanOfSynset;
+import wordnet.App.Util.CaseInput;
 import wordnet.App.Util.ExportExcel;
 import wordnet.App.Util.NameStrategy;
 import wordnet.App.Util.StrategyFactory;
@@ -36,24 +37,31 @@ public class MainBusinessImpl implements MainBusiness {
     }
 
     @Override
-    public Output identifyMeanOfWord(List<BodyFind> bodyFindSet) {
+    public Output identifyMeanOfWord(List<BodyFind> bodyFindSet, CaseInput caseInput) {
         // convert to set of word input
         this.output = new Output();
-        Set<String> wordSet = bodyFindSet.stream().map(bodyFind -> bodyFind.getWord()).collect(Collectors.toSet());
+        Set<String> input = bodyFindSet.stream().map(bodyFind -> bodyFind.getWord()).collect(Collectors.toSet());
         try {
-            this.mapObjectProcessed = this.mainBusinessProcessDataInput.doActionOne(wordSet);
+            switch (caseInput) {
+                case SYNSET:
+                    this.mapObjectProcessed = this.mainBusinessProcessDataInput.doActionOneWithSynset(input);
+                    break;
+                case WORD:
+                    this.mapObjectProcessed = this.mainBusinessProcessDataInput.doActionOneWithWord(input);
+                    break;
+            }
             processForFindMeanOfSynset();
             System.out.println(this.mapObjectProcessed.getCountSynset());
-            this.output.getMap().forEach(
-                    (s, results) -> {
-                        for (Result result : results) {
-                            System.out.println("result = " + result);
-                        }
-                    }
-            );
+//            this.output.getMap().forEach(
+//                    (s, results) -> {
+//                        for (Result result : results) {
+//                            System.out.println("result = " + result);
+//                        }
+//                    }
+//            );
             System.out.println(this.output.getCountOfResult());
-//            ExportExcel.exportExcel(this.output);
-//            System.out.println("Done Export");
+            ExportExcel.exportExcel(this.output);
+            System.out.println("Done Export");
         } catch (IOException e) {
             e.printStackTrace();
         }

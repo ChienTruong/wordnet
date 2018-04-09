@@ -197,15 +197,15 @@ public class ChooseCaseThree implements ChooseMeanOfSynset {
      * nên chuyển thành set chứa từng word
      */
     private void processCaseThreeTwoDotBAndThreeDotB(Synset synset, List<String> listMean, List<String> listVerifyMeanWordOfWordForm) {
-        Set<String> setVerifyWordByWordOfWordForm = new HashSet<>(0);
-        for (String s : listVerifyMeanWordOfWordForm) {
-            String[] strings = s.split(", ");
-            for (String string : strings) {
-                if (!string.isEmpty()) {
-                    setVerifyWordByWordOfWordForm.add(string);
-                }
-            }
-        }
+//        Set<String> setVerifyWordByWordOfWordForm = new HashSet<>(0);
+//        for (String s : listVerifyMeanWordOfWordForm) {
+//            String[] strings = s.split(", ");
+//            for (String string : strings) {
+//                if (!string.isEmpty()) {
+//                    setVerifyWordByWordOfWordForm.add(string);
+//                }
+//            }
+//        }
         List<WordForm> wordFormListParent = new ArrayList<>(0);
         for (Map.Entry<String, WordForm> stringWordFormEntry : synset.getMapWordForm().entrySet()) {
             WordForm wordForm = stringWordFormEntry.getValue();
@@ -216,7 +216,7 @@ public class ChooseCaseThree implements ChooseMeanOfSynset {
                     meanOfWordForm.add(stringMean);
                 }
             }
-            if (!meanOfWordForm.isEmpty() && setVerifyWordByWordOfWordForm.containsAll(meanOfWordForm)) {
+            if (!meanOfWordForm.isEmpty() && listVerifyMeanWordOfWordForm.containsAll(meanOfWordForm)) {
                 wordFormListParent.add(wordForm);
             }
         }
@@ -249,7 +249,9 @@ public class ChooseCaseThree implements ChooseMeanOfSynset {
                 Map<Key, Float> mapDiceOfTwoString = new HashMap<>(0);
                 for (String sOne : stringsOne) {
                     for (String sTwo : stringsTwo) {
-                        mapDiceOfTwoString.put(new Key(sOne, sTwo), CalculateDice.calculate(sOne, sTwo));
+                        if (!sOne.isEmpty() && !sTwo.isEmpty()) {
+                            mapDiceOfTwoString.put(new Key(sOne, sTwo), CalculateDice.calculate(sOne, sTwo));
+                        }
                     }
                 }
                 identifyMeanOfMapSDice(mapDiceOfTwoString, listMean);
@@ -324,6 +326,7 @@ public class ChooseCaseThree implements ChooseMeanOfSynset {
                         allMeanOfSynset.addAll(Arrays.asList(wordForm.getListMean().toString().replaceAll(Regex.regexBracket, "").split(", ")));
                     }
             );
+            allMeanOfSynset.removeIf(s -> s.isEmpty());
             mapReflection.put(synset, allMeanOfSynset);
         }
     }

@@ -10,7 +10,7 @@ public class PathFile {
     public static final String fileDataEV = "/home/chien/Documents/WordNet/ev.txt";
     public static final String fileSynonym = "/home/chien/Documents/WordNet/synDict.txt";
     public static final String fileSpecial = "/home/chien/Documents/WordNet/specialC.txt";
-    public static final String exportExcel = "/home/chien/Documents/WordNet/output.xlsx";
-
+    public static final String fileInput = "/home/chien/Documents/WordNet/synsetIdOne.txt";
+    public static final String exportExcel = "/home/chien/Documents/WordNet/outputOne.xlsx";
 
 }

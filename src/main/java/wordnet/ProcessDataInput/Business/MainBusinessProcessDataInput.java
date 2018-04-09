@@ -15,5 +15,7 @@ public interface MainBusinessProcessDataInput {
 //
 //    MapObjectProcessed doActionTwo() throws IOException;
 
-    MapObjectProcessed doActionOne(Set<String> wordInputSet) throws IOException;
+    MapObjectProcessed doActionOneWithWord(Set<String> wordInputSet) throws IOException;
+
+    MapObjectProcessed doActionOneWithSynset(Set<String> synsetIdSet) throws IOException;
 }
