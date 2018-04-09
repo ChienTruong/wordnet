@@ -44,16 +44,16 @@ public class MainBusinessImpl implements MainBusiness {
             this.mapObjectProcessed = this.mainBusinessProcessDataInput.doActionOne(wordSet);
             processForFindMeanOfSynset();
             System.out.println(this.mapObjectProcessed.getCountSynset());
-//            this.output.getMap().forEach(
-//                    (s, results) -> {
-//                        for (Result result : results) {
-//                            System.out.println("result = " + result);
-//                        }
-//                    }
-//            );
+            this.output.getMap().forEach(
+                    (s, results) -> {
+                        for (Result result : results) {
+                            System.out.println("result = " + result);
+                        }
+                    }
+            );
             System.out.println(this.output.getCountOfResult());
-            ExportExcel.exportExcel(this.output);
-            System.out.println("Done Export");
+//            ExportExcel.exportExcel(this.output);
+//            System.out.println("Done Export");
         } catch (IOException e) {
             e.printStackTrace();
         }

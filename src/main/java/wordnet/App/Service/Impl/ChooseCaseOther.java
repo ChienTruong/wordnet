@@ -40,6 +40,15 @@ public class ChooseCaseOther implements ChooseMeanOfSynset {
                     }
                 }
             }
+            // case character
+            if (listMean.isEmpty()) {
+                for (String s : wordFormSet) {
+                    if (s.length() == 1) {
+                        listMean.addAll(wordFormSet);
+                        break;
+                    }
+                }
+            }
             // case month
             if (listMean.isEmpty()) {
                 for (String s : wordFormSet) {
