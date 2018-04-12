@@ -1,5 +1,6 @@
 package wordnet.App.Business.Impl;
 
+import org.apache.tomcat.jni.Time;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import wordnet.App.Business.MainBusiness;
@@ -9,16 +10,24 @@ import wordnet.App.Model.Output;
 import wordnet.App.Model.Result;
 import wordnet.App.Service.ChooseMeanOfSynset;
 import wordnet.App.Util.CaseInput;
-import wordnet.App.Util.ExportExcel;
+import wordnet.App.Util.Export;
 import wordnet.App.Util.NameStrategy;
 import wordnet.App.Util.StrategyFactory;
 import wordnet.ProcessDataInput.Business.MainBusinessProcessDataInput;
 import wordnet.ProcessDataInput.Model.Synset;
+import wordnet.Util.PathFile;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by chien on 19/03/2018.
@@ -50,7 +59,10 @@ public class MainBusinessImpl implements MainBusiness {
                     this.mapObjectProcessed = this.mainBusinessProcessDataInput.doActionOneWithWord(input);
                     break;
             }
+            long start = Calendar.getInstance().getTimeInMillis();
             processForFindMeanOfSynset();
+            long end = Calendar.getInstance().getTimeInMillis();
+            System.out.println((end - start) / 100 / 60);
             System.out.println(this.mapObjectProcessed.getCountSynset());
 //            this.output.getMap().forEach(
 //                    (s, results) -> {
@@ -60,7 +72,8 @@ public class MainBusinessImpl implements MainBusiness {
 //                    }
 //            );
             System.out.println(this.output.getCountOfResult());
-            ExportExcel.exportExcel(this.output);
+//            Export.exportExcel(this.output);
+//            Export.exportTxt(this.output);
             System.out.println("Done Export");
         } catch (IOException e) {
             e.printStackTrace();

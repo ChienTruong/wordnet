@@ -30,15 +30,5 @@ public abstract class DataFile {
 
     protected abstract String getNameFile();
 
-    public String getMeanOfSynset(String synsetId) {
-        String mean = "";
-        for (String s : list) {
-            if (s.substring(0, 8).equals(synsetId)) {
-                mean = s.substring(9, s.length());
-                break;
-            }
-        }
-        return mean;
-    }
 
 }

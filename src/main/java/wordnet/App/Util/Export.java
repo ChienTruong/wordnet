@@ -7,15 +7,18 @@ import wordnet.App.Model.Output;
 import wordnet.App.Model.Result;
 import wordnet.Util.PathFile;
 
+import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Created by chien on 02/04/2018.
  */
-public class ExportExcel {
+public class Export {
 
     private static final String[] title = {"IdSynset", "WordForm", "Translate", "Case", "Gloss"};
 
@@ -62,4 +65,22 @@ public class ExportExcel {
         workbook.write(fileOutputStream);
         fileOutputStream.close();
     }
+
+    public static void exportTxt(Output output) throws IOException {
+        BufferedWriter bufferedWriter = Files.newBufferedWriter(Paths.get(PathFile.exportTxt));
+        output.getMap().forEach(
+                (s, results) -> results.forEach(
+                        result -> {
+                            String str = result.getIdSynset() + " | " + result.getListWordEn() + " | " + result.getListWordVn() + " | " + result.getCaseName() + "\n";
+                            try {
+                                bufferedWriter.write(str);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                )
+        );
+        bufferedWriter.close();
+    }
+
 }

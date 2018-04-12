@@ -13,6 +13,16 @@ public class DataFileSyllable extends DataFile {
         super();
     }
 
+    public String getMeanOfSynset(String synsetId) {
+        String mean = "";
+        for (String s : list) {
+            if (s.substring(0, 8).equals(synsetId)) {
+                mean = s.substring(9, s.length());
+                break;
+            }
+        }
+        return mean;
+    }
     @Override
     protected String getNameFile() {
         return PathFile.fileSpecial;

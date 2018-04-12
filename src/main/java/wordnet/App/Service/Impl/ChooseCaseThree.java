@@ -101,8 +101,27 @@ public class ChooseCaseThree implements ChooseMeanOfSynset {
                 makeMapSDiceBetweenTwoListMean(listMean, collectionOfListMean.get(i), collectionOfListMean.get(j));
             }
         }
+
         if (listVerifyMeanWordOfWordForm != null) {
-            listMean.removeIf(s -> !listVerifyMeanWordOfWordForm.contains(s));
+            // because java is pass by value, if it change, all of change for case else
+            List<String> listVerifyMeanWordOfWordFormIncludeSynnonym = new ArrayList<>(listVerifyMeanWordOfWordForm);
+            // get mean synonym for not remove
+            // that code isn't verified //
+            synset.getMapWordForm().forEach(
+                    (s, wordForm) -> {
+                        Set<String> meanOfWordForm = wordForm.getAllMean();
+                        if (!meanOfWordForm.isEmpty() && listVerifyMeanWordOfWordForm.containsAll(meanOfWordForm)) {
+                            listVerifyMeanWordOfWordFormIncludeSynnonym.addAll(
+                                    Arrays.asList(
+                                            wordForm.getListSynonymMean().toString()
+                                                    .replaceAll(Regex.regexBracket, "").split(", ")
+                                    )
+                            );
+                        }
+                    }
+            );
+            // isn't verified
+            listMean.removeIf(s -> !listVerifyMeanWordOfWordFormIncludeSynnonym.contains(s));
         }
     }
 
@@ -197,29 +216,15 @@ public class ChooseCaseThree implements ChooseMeanOfSynset {
      * nên chuyển thành set chứa từng word
      */
     private void processCaseThreeTwoDotBAndThreeDotB(Synset synset, List<String> listMean, List<String> listVerifyMeanWordOfWordForm) {
-//        Set<String> setVerifyWordByWordOfWordForm = new HashSet<>(0);
-//        for (String s : listVerifyMeanWordOfWordForm) {
-//            String[] strings = s.split(", ");
-//            for (String string : strings) {
-//                if (!string.isEmpty()) {
-//                    setVerifyWordByWordOfWordForm.add(string);
-//                }
-//            }
-//        }
         List<WordForm> wordFormListParent = new ArrayList<>(0);
-        for (Map.Entry<String, WordForm> stringWordFormEntry : synset.getMapWordForm().entrySet()) {
-            WordForm wordForm = stringWordFormEntry.getValue();
-            String[] stringMeans = wordForm.getListMean().toString().replaceAll(Regex.regexBracket, "").split(", ");
-            Set<String> meanOfWordForm = new HashSet<>(0);
-            for (String stringMean : stringMeans) {
-                if (!stringMean.isEmpty()) {
-                    meanOfWordForm.add(stringMean);
+        synset.getMapWordForm().forEach(
+                (s, wordForm) -> {
+                    Set<String> meanOfWordForm = wordForm.getAllMean();
+                    if (!meanOfWordForm.isEmpty() && listVerifyMeanWordOfWordForm.containsAll(meanOfWordForm)) {
+                        wordFormListParent.add(wordForm);
+                    }
                 }
-            }
-            if (!meanOfWordForm.isEmpty() && listVerifyMeanWordOfWordForm.containsAll(meanOfWordForm)) {
-                wordFormListParent.add(wordForm);
-            }
-        }
+        );
         List<WordForm> wordFormListChildren = synset.getMapWordForm().entrySet().stream()
                 .map(stringWordFormEntry -> stringWordFormEntry.getValue())
                 .filter(wordForm -> !wordFormListParent.contains(wordForm))
@@ -354,4 +359,5 @@ public class ChooseCaseThree implements ChooseMeanOfSynset {
             return name;
         }
     }
+
 }
