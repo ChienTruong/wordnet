@@ -1,6 +1,5 @@
 package wordnet.App.Business.Impl;
 
-import org.apache.tomcat.jni.Time;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import wordnet.App.Business.MainBusiness;
@@ -15,19 +14,13 @@ import wordnet.App.Util.NameStrategy;
 import wordnet.App.Util.StrategyFactory;
 import wordnet.ProcessDataInput.Business.MainBusinessProcessDataInput;
 import wordnet.ProcessDataInput.Model.Synset;
-import wordnet.Util.PathFile;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.time.Clock;
-import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Created by chien on 19/03/2018.
@@ -40,9 +33,12 @@ public class MainBusinessImpl implements MainBusiness {
     private Output output;
     private ChooseMeanOfSynset chooseMeanOfSynset;
 
+    private Scanner scanner;
+
     @Autowired
     public MainBusinessImpl(MainBusinessProcessDataInput mainBusinessProcessDataInput) {
         this.mainBusinessProcessDataInput = mainBusinessProcessDataInput;
+        this.scanner = new Scanner(System.in);
     }
 
     @Override
@@ -62,7 +58,7 @@ public class MainBusinessImpl implements MainBusiness {
             long start = Calendar.getInstance().getTimeInMillis();
             processForFindMeanOfSynset();
             long end = Calendar.getInstance().getTimeInMillis();
-            System.out.println((end - start) / 100 / 60);
+            System.out.println((end - start) / 1000 / 60);
             System.out.println(this.mapObjectProcessed.getCountSynset());
 //            this.output.getMap().forEach(
 //                    (s, results) -> {
@@ -72,13 +68,32 @@ public class MainBusinessImpl implements MainBusiness {
 //                    }
 //            );
             System.out.println(this.output.getCountOfResult());
-//            Export.exportExcel(this.output);
-//            Export.exportTxt(this.output);
-            System.out.println("Done Export");
+            export();
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private void export() throws IOException {
+        System.out.println("Do you want export:");
+        System.out.println("1: Excel");
+        System.out.println("2: Txt");
+        System.out.println("Else: Out");
+        System.out.println("Choose: ");
+        String choice = this.scanner.nextLine();
+        switch (choice) {
+            case "1":
+                Export.exportExcel(this.output);
+                System.out.println("Done Export");
+                break;
+            case "2":
+                Export.exportTxt(this.output);
+                System.out.println("Done Export");
+                break;
+            default:
+                System.exit(0);
+        }
     }
 
     /**
