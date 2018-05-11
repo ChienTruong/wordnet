@@ -14,12 +14,14 @@ import wordnet.App.Util.NameStrategy;
 import wordnet.App.Util.StrategyFactory;
 import wordnet.ProcessDataInput.Business.MainBusinessProcessDataInput;
 import wordnet.ProcessDataInput.Model.Synset;
+import wordnet.ProcessDataInput.Model.WordForm;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Scanner;
-import java.util.Set;
+import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -57,6 +59,7 @@ public class MainBusinessImpl implements MainBusiness {
             }
             long start = Calendar.getInstance().getTimeInMillis();
             processForFindMeanOfSynset();
+//            doSomething();
             long end = Calendar.getInstance().getTimeInMillis();
             System.out.println((end - start) / 1000 / 60);
             System.out.println(this.mapObjectProcessed.getCountSynset());
@@ -73,6 +76,49 @@ public class MainBusinessImpl implements MainBusiness {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private void doSomething() throws IOException {
+        BufferedWriter bufferedWriter = Files.newBufferedWriter(Paths.get("/home/chien/Documents/WordNet/HandleFile.txt"));
+        this.mapObjectProcessed.getMapObject().forEach(
+                (word, indexObject) -> {
+                    indexObject.getMapSynset().forEach(
+                            (synsetId, synset) -> {
+                                try {
+                                    // synset id
+                                    bufferedWriter.write("*" + synsetId + "\n");
+                                    // print word of synset
+                                    bufferedWriter.write("**\n");
+                                    process(synset.getMapWordForm(), bufferedWriter);
+                                    // print word parent and children
+                                    bufferedWriter.write("***\n");
+                                    synset.getMapSynsetLayerOnes().forEach(
+                                            (s, synset1) -> {
+                                                process(synset1.getMapWordForm(), bufferedWriter);
+                                            }
+                                    );
+                                    // print gloss
+                                    bufferedWriter.write("****\n");
+                                    process(synset.getMapWordFormFromGloss(), bufferedWriter);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                    );
+                }
+        );
+    }
+
+    private void process(Map<String, WordForm> mapWordForm, BufferedWriter bufferedWriter) {
+        mapWordForm.forEach(
+                (word, wordForm) -> {
+                    try {
+                        bufferedWriter.write(word + " | " + wordForm.getListMean().toString() + " | " + wordForm.getListSynonymMean().toString() + "\n");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+        );
     }
 
     private void export() throws IOException {

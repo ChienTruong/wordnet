@@ -17,6 +17,6 @@ public interface RestControl {
     ResponseEntity findWithWord(@RequestBody List<BodyFind> bodyFindList);
     @PostMapping("/findSynset")
     ResponseEntity findWithSynset(@RequestBody List<BodyFind> bodyFindList);
-    @GetMapping("/getAllMeanOfSynset")
+        @GetMapping("/getAllMeanOfSynset")
     ResponseEntity get() throws IOException;
 }
