@@ -13,10 +13,13 @@ import java.util.List;
  * Created by chien on 19/03/2018.
  */
 public interface RestControl {
+
     @PostMapping("/findWord")
     ResponseEntity findWithWord(@RequestBody List<BodyFind> bodyFindList);
+
     @PostMapping("/findSynset")
     ResponseEntity findWithSynset(@RequestBody List<BodyFind> bodyFindList);
-        @GetMapping("/getAllMeanOfSynset")
+
+    @GetMapping("/getAllMeanOfSynset")
     ResponseEntity get() throws IOException;
 }

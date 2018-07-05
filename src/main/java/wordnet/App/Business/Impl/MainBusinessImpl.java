@@ -23,6 +23,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by chien on 19/03/2018.
@@ -59,66 +60,22 @@ public class MainBusinessImpl implements MainBusiness {
             }
             long start = Calendar.getInstance().getTimeInMillis();
             processForFindMeanOfSynset();
-//            doSomething();
             long end = Calendar.getInstance().getTimeInMillis();
             System.out.println((end - start) / 1000 / 60);
             System.out.println(this.mapObjectProcessed.getCountSynset());
-//            this.output.getMap().forEach(
-//                    (s, results) -> {
-//                        for (Result result : results) {
-//                            System.out.println("result = " + result);
-//                        }
-//                    }
-//            );
+            this.output.getMap().forEach(
+                    (s, results) -> {
+                        for (Result result : results) {
+                            System.out.println("result = " + result);
+                        }
+                    }
+            );
             System.out.println(this.output.getCountOfResult());
             export();
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
-    }
-
-    private void doSomething() throws IOException {
-        BufferedWriter bufferedWriter = Files.newBufferedWriter(Paths.get("/home/chien/Documents/WordNet/HandleFile.txt"));
-        this.mapObjectProcessed.getMapObject().forEach(
-                (word, indexObject) -> {
-                    indexObject.getMapSynset().forEach(
-                            (synsetId, synset) -> {
-                                try {
-                                    // synset id
-                                    bufferedWriter.write("*" + synsetId + "\n");
-                                    // print word of synset
-                                    bufferedWriter.write("**\n");
-                                    process(synset.getMapWordForm(), bufferedWriter);
-                                    // print word parent and children
-                                    bufferedWriter.write("***\n");
-                                    synset.getMapSynsetLayerOnes().forEach(
-                                            (s, synset1) -> {
-                                                process(synset1.getMapWordForm(), bufferedWriter);
-                                            }
-                                    );
-                                    // print gloss
-                                    bufferedWriter.write("****\n");
-                                    process(synset.getMapWordFormFromGloss(), bufferedWriter);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                    );
-                }
-        );
-    }
-
-    private void process(Map<String, WordForm> mapWordForm, BufferedWriter bufferedWriter) {
-        mapWordForm.forEach(
-                (word, wordForm) -> {
-                    try {
-                        bufferedWriter.write(word + " | " + wordForm.getListMean().toString() + " | " + wordForm.getListSynonymMean().toString() + "\n");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-        );
     }
 
     private void export() throws IOException {

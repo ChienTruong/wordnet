@@ -4,6 +4,7 @@ import wordnet.App.Model.BodyFind;
 import wordnet.App.Model.Output;
 import wordnet.App.Util.CaseInput;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
