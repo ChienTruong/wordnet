@@ -11,7 +11,7 @@ public class PathFile {
     public static final String fileSynonym = "./file/synDict.txt";
     public static final String fileSpecial = "./file/special.txt";
 
-    public static final String fileInput = "/home/chien/Documents/WordNet/synsetId.txt";
+    public static final String fileInput = "./file/sample.txt";
     public static final String exportExcel = "./file/result.xlsx";
     public static final String exportTxt = "./file/result.txt";
 
