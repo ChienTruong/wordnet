@@ -71,7 +71,7 @@ public class Export {
         output.getMap().forEach(
                 (s, results) -> results.forEach(
                         result -> {
-                            String str = result.getIdSynset() + " | " + result.getListWordEn() + " | " + result.getListWordVn() + " | " + result.getCaseName() + "\n";
+                            String str = result.getIdSynset() + " | " + result.getListWordEn() + " | " + result.getListWordVn() + " | " + result.getCaseName() + " | " + result.getGloss() + "\n";
                             try {
                                 bufferedWriter.write(str);
                             } catch (IOException e) {

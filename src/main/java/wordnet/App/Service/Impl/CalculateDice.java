@@ -13,7 +13,7 @@ public class CalculateDice {
      * @param stringOne
      * @param stringTwo
      * @return
-     * công thức: (2 * (giao chưa 2 chuỗi)) / (số từ của chuỗi 1) + (số từ của chuỗi 2)
+     * công thức: (2 * (giao của 2 chuỗi)) / (số từ của chuỗi 1) + (số từ của chuỗi 2)
      */
     public static float calculate(String stringOne, String stringTwo) {
         String[] stringsOne = stringOne.trim().split(" ");

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import wordnet.App.Business.MainBusiness;
 import wordnet.App.Model.BodyFind;
+import wordnet.App.Model.BodyResult;
 import wordnet.App.Rest.RestControl;
 import wordnet.App.Util.CaseInput;
 import wordnet.Util.PathFile;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -25,6 +27,9 @@ public class RestControlImpl implements RestControl {
 
     @Autowired
     private MainBusiness mainBusiness;
+
+    @Autowired
+    private Result result;
 
     @Override
     public ResponseEntity findWithWord(@RequestBody List<BodyFind> bodyFindList) {
@@ -51,6 +56,15 @@ public class RestControlImpl implements RestControl {
         );
         this.findWithSynset(bodyFindList);
         return null;
+    }
+
+    @Override
+    public ResponseEntity<List<BodyResult>> find(@RequestBody BodyFind bodyFind) {
+        List<BodyResult> result = new LinkedList<>();
+        if (bodyFind != null && !"".equals(bodyFind)) {
+            result = this.result.getMeanOfWord(bodyFind.getWord());
+        }
+        return ResponseEntity.ok(result);
     }
 
 }

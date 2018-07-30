@@ -22,4 +22,7 @@ public interface RestControl {
 
     @GetMapping("/getAllMeanOfSynset")
     ResponseEntity get() throws IOException;
+
+    @PostMapping("/find")
+    ResponseEntity find(@RequestBody BodyFind bodyFind);
 }

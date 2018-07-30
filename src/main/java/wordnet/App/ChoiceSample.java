@@ -1,5 +1,7 @@
 package wordnet.App;
 
+import wordnet.Util.PathFile;
+
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -27,7 +29,7 @@ public class ChoiceSample {
      */
     public static void main(String[] args) {
         try {
-            Stream<String> streamFile = Files.lines(Paths.get("/home/chien/Documents/WordNet/result80kOfChien.txt"));
+            Stream<String> streamFile = Files.lines(Paths.get(PathFile.result));
             List<String> listId = streamFile.map(s -> s.split(" | ")[0]).collect(Collectors.toList());
             Collections.sort(listId);
             List<String> listNew = new ArrayList<>(500);
@@ -37,7 +39,7 @@ public class ChoiceSample {
                     index[j] = index[j] + 1000;
                 }
             }
-            BufferedWriter bufferedWriter = Files.newBufferedWriter(Paths.get("/home/chien/Documents/WordNet/sample.txt"));
+            BufferedWriter bufferedWriter = Files.newBufferedWriter(Paths.get(PathFile.fileInput));
             for (String s : listNew) {
                 bufferedWriter.write(s+"\n");
             }

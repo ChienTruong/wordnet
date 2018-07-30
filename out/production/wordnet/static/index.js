@@ -4,7 +4,6 @@
 
 function find() {
     var word = $('#word').val();
-    console.log(word);
     word = word.split(/(\s+)/).filter(function(e) { return e.trim().length > 0; });
     word = word.join('_');
     var objectFind = {'word': word.toLowerCase()};
@@ -17,17 +16,15 @@ function find() {
             var len = data.length;
             var str = '';
             for (var i = 0; i < len; i++) {
-                var subStr = '';
-                var subLen = data[i].words.length;
+                var subStr = '(' + data[i].synsetId + ') <ul><li>' + data[i].words + ': ';
+                subStr += data[i].gloss + '</li>';
+                var subLen = data[i].means.length;
                 for (var j = 0; j < subLen; j++) {
-                    data[i].words[j] = data[i].words[j].split('_').join(' ');
-                    subStr +=
-                        (word.toLowerCase() == data[i].words[j].toLowerCase() ? data[i].words[j] : '<button class="redirect">' + data[i].words[j] + '</button>')
-                        + (j == subLen - 1 ? '' : ', ');
+                    subStr += '<li>' + data[i].means[j] + '</li>';
                 }
+                subStr += '</ul>';
                 str += '<li>' +
-                    '\(' + data[i].resultId + '\)' +
-                    '\t' + subStr +
+                    subStr +
                     '</li>';
             }
             $('#listSynset').append(str);
